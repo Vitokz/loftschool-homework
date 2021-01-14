@@ -1,9 +1,9 @@
 <?php
-echo showSomething();
+include 'homewornN0func.php';
 const TEST_CONSTANTA = 'asd';
 $user_name = "Igor";
 
-include 'homewornN0func.php';
+echo showSomething();
 
 
 if (1 == 1) {
