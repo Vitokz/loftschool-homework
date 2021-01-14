@@ -1,12 +1,11 @@
 <?php
+echo showSomething();
 const TEST_CONSTANTA = 'asd';
 $user_name = "Igor";
 
-function show_Something(): string
-{
-    return 'SOMETHING';
-}
+include 'homewornN0func.php';
 
-if ($user_name == 1) {
+
+if (1 == 1) {
     echo 'hi';
 }
