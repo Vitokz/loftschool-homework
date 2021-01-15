@@ -62,15 +62,3 @@ function task3(int $n1, int $n2)
     echo '</pre>';
 }
 
-$string = [
-    'bmw',
-    'mersedes',
-    'opel',
-    'volkswaggen',
-    'toyota',
-    'honda',
-    'hyundai',
-];
-//echo task1($string, false);
-//echo task2('+', 2, 3, 4, 5, 6);
-//task3(6, 6);
