@@ -16,29 +16,27 @@ function task1(array $arrayString, $version = false)
 
 function task2(string $operation, ...$arqs)
 {
-    $result = 0;
-    if ($operation === '+' || $operation === '-') {
-        if ($operation === '+') {
-            for ($i = 0; $i < sizeof($arqs); $i++) {
+    //Проверка на целые и вещественные
+    for ($i = 0; $i < sizeof($arqs); $i++) {
+        if ((is_int($arqs[$i]) === false) && (is_float($arqs[$i]) === false)) {
+            return 'одно из значений не является числом';
+        }
+    }
+    $result = array_shift($arqs);
+    for($i = 0; $i < sizeof($arqs); $i++) {
+            if ($operation === '+') {
                 $result += $arqs[$i];
-            }
-        } else {
-            for ($i = 0; $i < sizeof($arqs); $i++) {
+            } elseif ($operation === '-') {
                 $result -= $arqs[$i];
+            } elseif ($operation === '*') {
+                $result *= $arqs[$i];
+            } elseif ($operation === '/') {
+                if ($arqs[$i] !== 0) {
+                    $result /= $arqs[$i];
+                } else {
+                    return 'одно из значений = 0 ,делить на ноль нельзя';
+                }
             }
-        }
-    }
-    if ($operation === '*') {
-        $result = 1;
-        for ($i = 0; $i < sizeof($arqs); $i++) {
-            $result *= $arqs[$i];
-        }
-    }
-    if ($operation === '/') {
-        $result = $arqs[0];
-        for ($i = 1; $i < sizeof($arqs); $i++) {
-            $result /= $arqs[$i];
-        }
     }
     return $result;
 }
