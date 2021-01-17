@@ -1,12 +1,16 @@
 <?php
-$fp = fopen("text.txt", 'w');
-fputs($fp, 'Hello again!');
-fclose($fp);
+file_put_contents('text.txt', 'Hello again!');
 
 function addFile($fileName)
 {
     $fp = fopen($fileName, 'r');
-    $str = fgets( $fp, 1024);
+    if(!$fp) {
+        return false;
+    }
+
+    while(feof($fp) === false) {
+        $str .= fgets($fp, 1024);
+    }
     echo $str;
 }
 

@@ -23,29 +23,32 @@ function task2(string $operation, ...$arqs)
         }
     }
     $result = array_shift($arqs);
-    for($i = 0; $i < sizeof($arqs); $i++) {
-            if ($operation === '+') {
-                $result += $arqs[$i];
-            } elseif ($operation === '-') {
-                $result -= $arqs[$i];
-            } elseif ($operation === '*') {
-                $result *= $arqs[$i];
-            } elseif ($operation === '/') {
-                if ($arqs[$i] !== 0) {
-                    $result /= $arqs[$i];
-                } else {
-                    return 'одно из значений = 0 ,делить на ноль нельзя';
-                }
+    for ($i = 0; $i < sizeof($arqs); $i++) {
+        if ($operation === '+') {
+            $result += $arqs[$i];
+        } elseif ($operation === '-') {
+            $result -= $arqs[$i];
+        } elseif ($operation === '*') {
+            $result *= $arqs[$i];
+        } elseif ($operation === '/') {
+            if ($arqs[$i] !== 0) {
+                $result /= $arqs[$i];
+            } else {
+                return 'одно из значений = 0 ,делить на ноль нельзя';
             }
+        }
     }
     return $result;
 }
 
 function task3(int $n1, int $n2)
 {
+    if ($n1 < 0 || $n2 < 0) {
+        return 'Введено отрицательное значение';
+    }
     echo '<pre>';
     echo '<table>';
-    for ($line = 1; $line <= $n2; $line++) {
+    for ($line = 1; $line <= $n1; $line++) {
         echo '<tr>';
         for ($column = 1; $column <= $n2; $column++) {
             echo '<td>';
