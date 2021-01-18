@@ -12,6 +12,7 @@ function addFile($fileName)
         $str .= fgets($fp, 1024);
     }
     echo $str;
+    fclose($fp);
 }
 
 addFile('text.txt');
