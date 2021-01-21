@@ -1,49 +1,30 @@
 <?php
-
-function generateName()
+//Создание массива пользователей
+function generateRandomUsers(int $countUsers, array $user_names)
 {
-    $randomNameId = rand(1, 5);
-    switch ($randomNameId) {
-        case 1:
-            return 'Sasha';
-        case 2:
-            return 'Geor';
-        case 3:
-            return 'Sos';
-        case 4:
-            return 'Vlad';
-        case 5:
-            return 'Diana';
+    $users = [];
+    for ($i = 1; $i <= $countUsers; $i++) { //создем массив
+
+        $users ["User{$i}"]= [  //заполняем массив
+            'id' => $i,
+            'name' => $user_names[array_rand($user_names)],
+            'age' => rand(18, 45)
+        ];
     }
+    return $users;
 }
 
-function countNames(array $array)
+//Вычисление количества пользователей с одинаковыми именами
+function countNames( array $users)
 {
-    foreach ($array as $key ) {
-        do {
-            if ($key['name'] === 'Sasha') {
-                $countSasha++;
-            } elseif ($key['name'] === 'Geor') {
-                $countGeor++;
-            } elseif ($key['name'] === 'Sos') {
-                $countSos++;
-            } elseif ($key['name'] === 'Vlad') {
-                $countVlad++;
-            } elseif ($key['name'] === 'Diana') {
-                $countDiana++;
-            }
-
-    } while(!$array);
-}
-    return $array = [
-        'Sasha'=>$countSasha,
-        'Geor'=>$countGeor,
-        'Sos'=>$countSos,
-        'Vlad'=>$countVlad,
-        'Diana'=>$countDiana
-    ];
+    $arrayNames= function ($users)
+    {
+        return $users['name'];
+    };
+   return array_count_values(array_map($arrayNames, $users));
 }
 
+// Вычисление среднего возраста
 function getMiddleAge(array $array)
 {
     foreach($array as $key) {
@@ -51,3 +32,4 @@ function getMiddleAge(array $array)
     }
     return $sum / 50;
 }
+

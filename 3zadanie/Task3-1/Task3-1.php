@@ -1,16 +1,12 @@
 <?php
-include "functions.php";
+include 'functions.php';
 echo '<pre>';
+$user_names = require('usersName.php');
+//var_dump($user_names);
 
-$users = [];
-for ($i = 1; $i <= 50; $i++) { //создем массив
-    $users += ["User{$i}" => [  //заполняем массив
-        'id' => $i,
-        'name' => generateName(),
-        'age' => rand(18, 45)
-    ],
-    ];
-}
+//создаем пользователей
+$users = generateRandomUsers(50,$user_names);
+//var_dump($users);
 
 //Преобразовываем массив $users в Json формат
 $json=json_encode($users);
@@ -29,7 +25,7 @@ echo '<br>';
 
 //Считаем средний восзраст
 $middleAge=getMiddleAge($arrayJson);
-var_export("Средний возраст :{$middleAge}");
+//var_export("Средний возраст :{$middleAge}");
 
 
 
