@@ -1,5 +1,13 @@
 <?php
-include 'classService.php';
+include 'classes/TariffINTER.php';
+include 'classes/ServiceINTER.php';
+include 'classes/GPS.php';
+include 'classes/dopDriver.php';
+include 'classes/Tariff.php';
+include 'classes/BasicTariff.php';
+include 'classes/hoursTariff.php';
+include 'classes/StudentsTariff.php';
+
 
 
 /** @var serviceINTER $tariff */

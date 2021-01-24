@@ -1,4 +1,5 @@
 <?php
+include 'SQLhost.php';
 
 class Db
 {
@@ -28,7 +29,7 @@ class Db
     private function connect()
     {
         if (!$this->pdo) {
-            $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=task3_2", 'root', 'root');
+            $this->pdo = new PDO("mysql:host=" .HOST_ID .";dbname=" . DATABASE_NAME , USERNAME_SQL, PASSWORD_SQL);
         }
         return $this->pdo;
     }
