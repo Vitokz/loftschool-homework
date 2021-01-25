@@ -2,9 +2,9 @@
 class dopDriver implements ServiceINTER
 {
 
-public function apply($tarrif, &$price)
+public function apply($tarrif, $price)
 {
 
-$price = $price + 100;
+return $price + 100;
 }
 }

@@ -1,6 +1,6 @@
 <?php
 interface ServiceINTER
 {
-    public function apply($tarrif, &$price);
+    public function apply(TariffINTER $tarrif, $price);
 
 }

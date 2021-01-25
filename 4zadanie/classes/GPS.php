@@ -2,9 +2,9 @@
 class GPS implements ServiceINTER
 {
 
-public function apply($tarrif, &$price)
+public function apply($tarrif, $price)
 {
 $hours = ceil($tarrif->getMinutes() / 60);
-$price = $price + $hours*15;
+return $price + $hours*15;
 }
 }

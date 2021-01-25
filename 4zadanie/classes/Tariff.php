@@ -37,7 +37,7 @@ abstract class TarrifStandart implements TariffINTER
         $price = ($this->kil * $this->kilPrice) + ($this->min * $this->minPrice);
         if ($this->services) {
             foreach ($this->services as $service) {
-                $service->apply($this, $price);
+                 $price=$service->apply($this,$price);
             }
 
         }
