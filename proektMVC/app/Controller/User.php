@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use Src;
 use App\Model\UserModel;
 use Src\AbstractController;
@@ -18,18 +19,18 @@ class User extends AbstractController
         $check = true;
 
         if (empty($name)) {
-            $data=['error1'=>'Поле имя не может быть пустым'];
+            $data = ['error1' => 'Поле имя не может быть пустым'];
             $check = false;
         }
         if (empty($email)) {
-            $data=['error2' => 'Поле email не может быть пустым'];
+            $data = ['error2' => 'Поле email не может быть пустым'];
             $check = false;
         }
         if ((mb_strlen($password1) < 4) || (mb_strlen($password2) < 4)) {
-            $data=['error' =>'Длинна пароля должна быть не меньше 4 символов'];
+            $data = ['error' => 'Длинна пароля должна быть не меньше 4 символов'];
             $check = false;
         } elseif ($password1 !== $password2) {
-            $data=['error'=>'Пароли должны совпадать'];
+            $data = ['error' => 'Пароли должны совпадать'];
             $check = false;
         }
 
@@ -39,37 +40,48 @@ class User extends AbstractController
             $userModel->setEmail($email);
             $userModel->setPassword($password1);
             $id = $userModel->saveUser();
-            $_SESSION['id']=$id;
+            $_SESSION['id'] = $id;
             $this->setCurrentUser($id);
+
             $this->redirect('..\html\..\Blog\blog');
         }
-        return $this->view->render('test.phtml', [$data]);
+
+        return $this->view->render('UserLinks\regAndAuth.phtml', [$data]);
     }
 
     public function dataprofile()
     {
-        $id =//$_POST['idUser'];
-        $userModel = new UserModel();
-        $userInfo = $userModel->getByID($id);
-        var_dump($userInfo);
+        if(isset($this->currentUser)) {
+            $id = $_SESSION['id'];
+            $userModel = new UserModel();
+            $userInfo = $userModel->getByID($id);
+            return $this->view->render('UserLinks\ProfileData.phtml', [
+                'id'=>$userInfo['id'],
+                'name'=>$userInfo['Username'],
+                'email'=>$userInfo['email'],
+                'regDate'=>$userInfo["date"]
+                ]);
+        } else {
+            $this->redirect('..\html\..\User\registartion');
+        }
     }
 
     public function authorization()
     {
-        $email = 'Vito@mail.ru';//$_POST['email'];
+        $email = $_POST['email'];
         if (isset($email)) {
-            $password = 12345;//$_POST['password'];
+            $password = $_POST['password'];
 
             $userModel = new UserModel();
             $check = $userModel->getByEmailAndPassword($email, $password);
             if ($check === 'error: User not found') {
-                $this->view->assign('error', 'Неверный логин или пароль');
+                $data = ['error1' => 'Неверная почта или пароль'];
             } else if (isset($check)) {
                 $_SESSION['id'] = $check['id'];
                 $this->redirect('..\html\..\Blog\blog');
             }
         }
-        return $this->view->render('test.phtml');
+        return $this->view->render('UserLinks\regAndAuth.phtml', [$data]);
 
     }
 }
