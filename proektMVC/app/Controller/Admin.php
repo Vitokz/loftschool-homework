@@ -8,9 +8,11 @@ class Admin extends AbstractController
 {
     public function deletemessage()
     {
-        $id=$_GET['id'];
-        $modelBlog= new BlogModel();
-        $modelBlog->deleteMessages($id);
-        $this->redirect('..\..\html\..\Blog\blog');
+        if($_SESSION['id']=== ADMIN_ID) {
+            $id = $_GET['id'];
+            $modelBlog = new BlogModel();
+            $modelBlog->deleteMessages($id);
+            $this->redirect(DIRECTORY_SEPARATOR .'Blog');
+        }else{$this->redirect(DIRECTORY_SEPARATOR .'Blog');}
     }
 }

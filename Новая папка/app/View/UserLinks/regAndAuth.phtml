@@ -1,5 +1,5 @@
 Регистрация:
-<form action="..\html\..\User\registration" method="post">
+<form action="<?=DIRECTORY_SEPARATOR?>User<?=DIRECTORY_SEPARATOR?>registration" method="post">
     Имя: <input type="text" name="name"> <br>
     Почта: <input type="text" name="email"> <br>
     Пароль: <input type="password" name="password1"> <br>
@@ -9,7 +9,7 @@
 <br>
 <br>
 Вход:
-<form action="..\html\..\User\authorization" method="post">
+<form action="<?=DIRECTORY_SEPARATOR?>User<?=DIRECTORY_SEPARATOR?>authorization" method="post">
     Почта: <input type="text" name="email">
     Пароль:<input type="password" name="password">
     <input type="submit" value="Войти">

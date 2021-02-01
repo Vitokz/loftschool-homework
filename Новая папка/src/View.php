@@ -9,7 +9,7 @@ class View
 
     public function __construct()
     {
-        $this->templPath = PROJECT_ROOT_DIR . '\app\View';
+        $this->templPath = PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'View';
     }
 
     public function render(string $tpl, $data = []): string

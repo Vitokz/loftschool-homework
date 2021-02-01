@@ -8,9 +8,18 @@ use Src\AbstractController;
 
 class User extends AbstractController
 {
+    public function user()
+    {
+        if(isset($_SESSION['id'])){
+            $this->redirect('Blog'.DIRECTORY_SEPARATOR.'blog');
+        } else {
+            return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'regAndAuth.phtml', []);
+        }
+    }
 
     public function registration()
     {
+        if(isset($_SESSION['id'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password1 = $_POST['password1'];
@@ -43,10 +52,12 @@ class User extends AbstractController
             $_SESSION['id'] = $id;
             $this->setCurrentUser($id);
 
-            $this->redirect('..\html\..\Blog\blog');
+            $this->redirect(DIRECTORY_SEPARATOR.'Blog'.DIRECTORY_SEPARATOR.'blog');
         }
 
-        return $this->view->render('UserLinks\regAndAuth.phtml', [$data]);
+        return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'regAndAuth.phtml', ['errors'=>$data]);
+        }
+
     }
 
     public function dataprofile()
@@ -55,14 +66,14 @@ class User extends AbstractController
             $id = $_SESSION['id'];
             $userModel = new UserModel();
             $userInfo = $userModel->getByID($id);
-            return $this->view->render('UserLinks\ProfileData.phtml', [
+            return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'ProfileData.phtml', [
                 'id'=>$userInfo['id'],
                 'name'=>$userInfo['Username'],
                 'email'=>$userInfo['email'],
                 'regDate'=>$userInfo["date"]
                 ]);
         } else {
-            $this->redirect('..\html\..\User\registartion');
+            $this->redirect(DIRECTORY_SEPARATOR.'User');
         }
     }
 
@@ -78,10 +89,10 @@ class User extends AbstractController
                 $data = ['error1' => 'Неверная почта или пароль'];
             } else if (isset($check)) {
                 $_SESSION['id'] = $check['id'];
-                $this->redirect('..\html\..\Blog\blog');
+                $this->redirect(DIRECTORY_SEPARATOR.'Blog'.DIRECTORY_SEPARATOR.'blog');
             }
         }
-        return $this->view->render('UserLinks\regAndAuth.phtml', [$data]);
+        return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'regAndAuth.phtml', ['errors'=>$data]);
 
     }
 }

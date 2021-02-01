@@ -1,6 +1,6 @@
 <?php
 namespace Src;
-include PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . '\database\SQLhost.php';
+include PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . '\database'.DIRECTORY_SEPARATOR.'SQLhost.php';
 
 class Db
 {

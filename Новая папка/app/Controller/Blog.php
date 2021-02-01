@@ -10,18 +10,18 @@ class Blog extends AbstractController
     public function blog()
     {
        if(!$this->currentUser) {
-           $this->redirect('..\html\..\User\registration');
+           $this->redirect(DIRECTORY_SEPARATOR.'User');
        }
         $blogModel=new BlogModel();
         $messages=$blogModel->showMessage();
-        return  $this->view->render('BlogLinks\blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
+        return  $this->view->render('BlogLinks'. DIRECTORY_SEPARATOR .'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
 
     }
 
     public function pushmessage()
     {
         $message=$_POST['message'];
-        if(isset($message)) {
+        if($message !== '') {
             $idUser = $_SESSION['id'];
             $blogModel = new BlogModel();
 
@@ -32,10 +32,12 @@ class Blog extends AbstractController
             $blogModel->pushMessage($idUser, $message,);
             $blogModel=new BlogModel();
             $messages=$blogModel->showMessage();
-            return $this->view->render('BlogLinks\blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
+            return $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
         } else {
             var_dump('Сообщение не может быть пустым');
-            return  $this->view->render('BlogLinks\blog.phtml', []);
+            $blogModel=new BlogModel();
+            $messages=$blogModel->showMessage();
+            return  $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
         }
     }
 
@@ -43,16 +45,16 @@ class Blog extends AbstractController
     {
          $blogModel=new BlogModel();
          $messages=$blogModel->showMessage();
-         return  $this->view->render('BlogLinks\blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
+         return  $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
     }
 
     public function apiformat()
     {
-        $id=2;//$_POST['idUser'];
+        $id=$_POST['idUser'];
         $blogModel=new BlogModel();
         $messages=$blogModel->userMessages($id);
         if (isset($messages)){
-            header('Content-type: application/json');
+            header('Content-type: application'.DIRECTORY_SEPARATOR.'json');
             return json_encode($messages);
         } else return 'нету данных ';
     }
