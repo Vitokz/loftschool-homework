@@ -1,0 +1,32 @@
+<br>Добро пожаловать на наш блог<br><br>
+
+<form enctype="multipart<?=DIRECTORY_SEPARATOR?>form-data" action="<?=DIRECTORY_SEPARATOR?>Blog<?=DIRECTORY_SEPARATOR?>pushmessage" method="post">
+   Ваше сообщение: <input type="text" name="message"><br>
+    Изображение <input type="file" name="image">
+    <input type="submit" value="запукай">
+</form>
+<br>
+<br>
+Глобальный список сообщений:<br>
+    <?php foreach ($this->messages as $posts):?>
+    <div>
+        <? if($this->user == ADMIN_ID): ?>
+        <?php var_dump($posts['id']);?>
+         <a href="<?=DIRECTORY_SEPARATOR?>Admin<?=DIRECTORY_SEPARATOR?>deletemessage<?=DIRECTORY_SEPARATOR?>?id=<?=$posts['id'];?>">Delete</a>
+        <?endif;?>
+        <span>Сообщение от пользователя:<?=htmlspecialchars($posts['name']);?></span><br>
+        <span><?=htmlspecialchars($posts['text']);?></span><br><br>
+        <? if($posts['image'] !=='netu'):?>
+        <span><img src="http:<?=DIRECTORY_SEPARATOR?><?=DIRECTORY_SEPARATOR?>localhost<?=DIRECTORY_SEPARATOR?>images<?=DIRECTORY_SEPARATOR?><?=$posts['image'];?>" alt="Це картинка"></span><br><br>
+        <?endif;?>
+    </div>
+    <?endforeach;?>
+<br>
+<br>
+Вывести сообщения через ID пользоывтеля
+<form action="<?=DIRECTORY_SEPARATOR?>Blog<?=DIRECTORY_SEPARATOR?>apiformat" method="post">
+    <br>
+     Введите ID:<input type="number" name="idUser">
+    <input type="submit" value="запукай">
+    <br>
+</form>

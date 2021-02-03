@@ -1,0 +1,32 @@
+<br>Добро пожаловать на наш блог<br><br>
+
+<form enctype="multipart/form-data" action="/Blog/pushmessage" method="post">
+    Ваше сообщение: <input type="text" name="message"><br>
+    Изображение <input type="file" name="image">
+    <input type="submit" value="запукай">
+</form>
+<br>
+<br>
+Глобальный список сообщений:<br>
+{% for posts in messages %}
+<div>
+    {% if user == 6 %}
+    <a href="/Admin/deletemessage/?id={{ posts.id }}">Delete</a>
+    {% endif %}
+    <span>Сообщение от пользователя:{{posts.name}}</span><br>
+
+    <span>{{posts.text}}</span><br><br>
+    {% if posts.image != 'netu' %}
+    <span><img src="http://localhost/images/{{posts.image}}" alt="Це картинка"></span><br><br>
+    {% endif %}
+</div>
+{% endfor %}
+<br>
+<br>
+Вывести сообщения через ID пользоывтеля
+<form action="/Blog/apiformat" method="post">
+    <br>
+    Введите ID:<input type="number" name="idUser">
+    <input type="submit" value="запукай">
+    <br>
+</form>
