@@ -7,22 +7,22 @@ use Src\Db;
 
 class BlogModel extends AbsctractModel
 {
-    private $image;
-    public function pushMessage($idUser, $message)
+    public function pushMessage($idUser, $message, $image = null)
     {
         $db = Db::getInstance();
         $name=$this->checkName();
+        $load=new LoadFile();
         $query = 'INSERT INTO `messages`(`id_user`,`name`, `text`, `datetime`, `image`)
                 VALUES (:idUser,:name,:message,:date,:image);';
-        if($this->image === null) {
-            $this->image ='netu';
+        if($image === null) {
+            $image ='netu';
         }
         $result = $db->exec($query, __METHOD__, [
             'idUser' => $idUser,
             'name'=> $name,
             'message' => $message,
             'date' => date("Y-m-d H:i:s"),
-            'image' =>$this->image
+            'image' =>$image
             ]);
     }
 
@@ -45,18 +45,6 @@ class BlogModel extends AbsctractModel
 
      }
 
-     public function loadFile($file)
-     {
-           if(file_exists($file)){
-               $this->image = $this->genImageName();
-               move_uploaded_file( $file , getcwd() . DIRECTORY_SEPARATOR . "images" . DIRECTORY_SEPARATOR . $this->image);
-           }
-     }
-
-     public function genImageName()
-     {
-         return sha1(mt_rand(1,10000)) . '.jpg';
-     }
 
      public function userMessages($id)
      {

@@ -7,8 +7,10 @@ use Src\AbstractController;
 class Pictureresave extends AbstractController
 {
     protected static $_imagePath;
-    public function __construct()
+    private $image;
+    public function __construct($image)
     {
+        $this->image=$image;
         self::$_imagePath=getcwd() . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR;
     }
 
@@ -22,10 +24,6 @@ class Pictureresave extends AbstractController
                 $image->aspectRatio();
             })
             ->save($result, 80);
-
-        //$image->save($result, 80);
-        //echo 'success';
-
         self::watermark($image);
 
         echo $image->response('png');

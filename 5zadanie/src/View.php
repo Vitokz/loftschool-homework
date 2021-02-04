@@ -3,6 +3,9 @@
 namespace Src;
 
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 class View
 {
     private $data = [];
@@ -15,11 +18,20 @@ class View
 
     public function render(string $tpl, $data = []): string
     {
+        /**
        $this->data += $data;
        ob_start();
        include $this->templPath . DIRECTORY_SEPARATOR . $tpl;
        return ob_get_clean();
+         */
+       $twig=$this->twig();
+        $this->data += $data;
+        ob_start();
+        include $this->templPath . DIRECTORY_SEPARATOR . $tpl;
+        return ob_get_clean();
    }
+
+
    public function __get($varName)
    {
        return $this->data[$varName] ?? null;

@@ -10,14 +10,19 @@ use Twig\Loader\FilesystemLoader;
 
 class User extends AbstractController
 {
+    private $twig;
+    public function __construct()
+    {
+        $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View');
+        $this->twig = new Environment($loader, ['debug' => true]);
+    }
+
     public function user()
     {
         if(isset($_SESSION['id'])){
             $this->redirect(DIRECTORY_SEPARATOR.'Blog'.DIRECTORY_SEPARATOR.'blog');
         } else {
-            $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'UserLinks');
-            $twig = new Environment($loader, ['debug' => true]);
-            return $twig->render(DIRECTORY_SEPARATOR . 'regAndAuth.twig', []);
+            return $this->twig->render(  DIRECTORY_SEPARATOR . 'UserLinks' .DIRECTORY_SEPARATOR . 'regAndAuth.twig', []);
             //return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'regAndAuth.phtml', []);
         }
     }
@@ -59,9 +64,7 @@ class User extends AbstractController
 
                $this->redirect(DIRECTORY_SEPARATOR . 'Blog' . DIRECTORY_SEPARATOR . 'blog');
            } else{
-               $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'UserLinks');
-               $twig = new Environment($loader, ['debug' => true]);
-               return $twig->render(DIRECTORY_SEPARATOR . 'regAndAuth.twig', []);
+               return $this->twig->render(DIRECTORY_SEPARATOR . 'UserLinks' .DIRECTORY_SEPARATOR . 'regAndAuth.twig', []);
            }
        }
         $this->redirect(DIRECTORY_SEPARATOR.'Blog'.DIRECTORY_SEPARATOR.'blog');
@@ -76,9 +79,7 @@ class User extends AbstractController
             $id = $_SESSION['id'];
             $userModel = new UserModel();
             $userInfo = $userModel->getByID($id);
-            $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'UserLinks');
-            $twig = new Environment($loader, ['debug' => true]);
-            return $twig->render(DIRECTORY_SEPARATOR . 'ProfileData.twig', [
+            return $this->twig->render(DIRECTORY_SEPARATOR . 'ProfileData.twig', [
                 'id'=>$userInfo['id'],
                 'name'=>$userInfo['Username'],
                 'email'=>$userInfo['email'],
@@ -110,9 +111,7 @@ class User extends AbstractController
                 $this->redirect(DIRECTORY_SEPARATOR.'Blog'.DIRECTORY_SEPARATOR.'blog');
             }
         }
-        $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'UserLinks');
-        $twig = new Environment($loader, ['debug' => true]);
-        return $twig->render(DIRECTORY_SEPARATOR . 'regAndAuth.twig', ['errors' => $data]);
+        return $this->twig->render(DIRECTORY_SEPARATOR . 'UserLinks' .DIRECTORY_SEPARATOR . 'regAndAuth.twig', ['errors' => $data]);
         //return $this->view->render('UserLinks'.DIRECTORY_SEPARATOR.'regAndAuth.phtml', ['errors'=>$data]);
 
     }

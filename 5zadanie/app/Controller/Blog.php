@@ -2,12 +2,19 @@
 namespace App\Controller;
 
 use App\Model\BlogModel;
+use App\Model\LoadFile;
 use Src\AbstractController;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 class Blog extends AbstractController
 {
+    private $twig;
+    public function __construct()
+    {
+        $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View');
+        $this->twig = new Environment($loader, ['debug' => true]);
+    }
     public function blog()
     {
        if($this->currentUser == '') {
@@ -15,9 +22,7 @@ class Blog extends AbstractController
        }else {
            $blogModel = new BlogModel();
            $messages = $blogModel->showMessage();
-           $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'BlogLinks');
-           $twig = new Environment($loader, ['debug' => true]);
-           return $twig->render(DIRECTORY_SEPARATOR . 'blog.twig', ['messages' => $messages, 'user' => $_SESSION['id']]);
+           return $this->twig->render(DIRECTORY_SEPARATOR . 'BlogLinks' .DIRECTORY_SEPARATOR . 'blog.twig', ['messages' => $messages, 'user' => $_SESSION['id']]);
            //return  $this->view->render('BlogLinks'. DIRECTORY_SEPARATOR .'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
        }
     }
@@ -30,23 +35,20 @@ class Blog extends AbstractController
             $blogModel = new BlogModel();
 
             if(isset($_FILES['image']['tmp_name'])) {
-                $blogModel->loadFile($_FILES['image']['tmp_name']);
+                $load=new LoadFile();
+                 $image=$load->loadFile($_FILES['image']['tmp_name']);
             }
 
-            $blogModel->pushMessage($idUser, $message,);
+            $blogModel->pushMessage($idUser, $message,$image);
             $blogModel=new BlogModel();
             $messages=$blogModel->showMessage();
-            $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'BlogLinks');
-            $twig = new Environment($loader, ['debug' => true]);
-            return $twig->render(DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
+            return $this->twig->render(DIRECTORY_SEPARATOR . 'BlogLinks' .DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
             //return $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
         } else {
             var_dump('Сообщение не может быть пустым');
             $blogModel=new BlogModel();
             $messages=$blogModel->showMessage();
-            $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'BlogLinks');
-            $twig = new Environment($loader, ['debug' => true]);
-            return $twig->render(DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
+            return $this->twig->render(DIRECTORY_SEPARATOR . 'BlogLinks' .DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
             //return  $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
         }
     }
@@ -55,9 +57,7 @@ class Blog extends AbstractController
     {
          $blogModel=new BlogModel();
          $messages=$blogModel->showMessage();
-        $loader = new FilesystemLoader(PROJECT_ROOT_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'View' . DIRECTORY_SEPARATOR . 'BlogLinks');
-        $twig = new Environment($loader, ['debug' => true]);
-        return $twig->render(DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
+        return $this->twig->render(DIRECTORY_SEPARATOR . 'BlogLinks' .DIRECTORY_SEPARATOR . 'blog.twig', ['messages'=>$messages, 'user'=>$_SESSION['id']]);
          //return  $this->view->render('BlogLinks'.DIRECTORY_SEPARATOR.'blog.phtml', ['messages' => $messages, 'user'=>$_SESSION['id']]);
     }
 
@@ -67,7 +67,6 @@ class Blog extends AbstractController
         $blogModel=new BlogModel();
         $messages=$blogModel->userMessages($id);
         if (isset($messages)){
-            header('Content-type: application'.DIRECTORY_SEPARATOR.'json');
             return json_encode($messages);
         } else return 'нету данных ';
     }
