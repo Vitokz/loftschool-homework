@@ -79,7 +79,7 @@ class User extends AbstractController
             $id = $_SESSION['id'];
             $userModel = new UserModel();
             $userInfo = $userModel->getByID($id);
-            return $this->twig->render(DIRECTORY_SEPARATOR . 'ProfileData.twig', [
+            return $this->twig->render(DIRECTORY_SEPARATOR . 'UserLinks' .DIRECTORY_SEPARATOR . 'ProfileData.twig', [
                 'id'=>$userInfo['id'],
                 'name'=>$userInfo['Username'],
                 'email'=>$userInfo['email'],

@@ -24,15 +24,16 @@ class Emailpush extends AbstractController
             $transport->setPassword(PASSWORD);
 
             $mailer = new Swift_Mailer($transport);
-            $info=file_get_contents(PROJECT_ROOT_DIR.'\app\View\EmailLetter\emailLetter.twig');
+            
             $message = (new Swift_Message('Wonderful Subject'))
                 ->setFrom([EMAIL => 'Прилетела Проверочка'])
                 ->setTo(['vitalik-kaziev@mail.ru'])
-                ->setBody($info)
+                ->setBody($this->twig->render(DIRECTORY_SEPARATOR.'EmailLetter'.DIRECTORY_SEPARATOR.'emailLetter.twig'),'text/html')
             ;
 
-            $result = $mailer->send($message);
-            var_dump($result);
+
+            //$result = $mailer->send($message);
+            //var_dump($result);
         }catch (\Exception $e) {
             var_dump($e->getMessage());
         }
