@@ -1,0 +1,23 @@
+<table>
+    <tr>
+        <td>Имя</td>
+        <td>Почта</td>
+        <td>Пароль</td>
+        <td>Дата регистрации</td>
+        <td>Действие</td>
+    </tr>
+    <br>
+    {% for data in userData %}
+    <tr>
+        <td>{{data.Username}}</td>
+        <td>{{data.email}}</td>
+        <td>{{data.password}}</td>
+        <td>{{data.date}}</td>
+        <td><a href="/Admin/editting/?id={{ data.id }}">Редактировать</a></td>
+    </tr>
+        <br>
+    {% endfor %}
+</table>
+<br>
+<br>
+<a href="/Blog/blog">Вернуться на блог</a>

@@ -1,0 +1,47 @@
+Добро пожаловать на наш блог<br><br>
+
+<form enctype="multipart/form-data" action="/Blog/pushmessage" method="post">
+    Ваше сообщение: <input type="text" name="message"><br>
+    Изображение <input type="file" name="image">
+    <input type="submit" value="запукай">
+</form>
+<br>
+
+
+    {% if user == 15 %}
+    <form action="/Admin/createuser" method="post">
+        Имя пользователя: <input type="text" name="name"><br>
+        Email:<input type="text" name="email"><br>
+        Password:<input type="password" name="password"><br>
+        <input type="submit" value="Создать">
+    </form>
+    {% endif %}
+<br>
+    {% if user == 15 %}
+        <a href="/Admin/editor">Edit Users</a>
+    {% endif %}
+
+<br>
+Глобальный список сообщений:<br>
+{% for posts in messages %}
+<div>
+    {% if user == 15 %}
+    <a href="/Admin/deletemessage/?id={{ posts.id }}">Delete</a>
+    {% endif %}
+    <span>Сообщение от пользователя:{{posts.name}}</span><br>
+
+    <span>{{posts.text}}</span><br><br>
+    {% if posts.image != 'netu' %}
+    <span><img src="http://mvc/images/{{posts.image}}" alt="Це картинка"></span><br><br>
+    {% endif %}
+</div>
+{% endfor %}
+<br>
+<br>
+Вывести сообщения через ID пользоывтеля
+<form action="/Blog/apiformat" method="post">
+    <br>
+    Введите ID:<input type="number" name="idUser">
+    <input type="submit" value="запукай">
+    <br>
+</form>

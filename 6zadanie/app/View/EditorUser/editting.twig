@@ -1,0 +1,7 @@
+<form action="/Admin/endedit" method="post">
+    <input type="hidden" name="id" value="{{ profile.id }}">
+    Имя пользователя: <input type="text" name="name" value="{{ profile.Username }}"><br>
+    Email:<input type="text" name="email" value="{{ profile.email}}"><br>
+    Password:<input type="text" name="password" value="{{ profile.password}}"><br>
+    <input type="submit" value="Создать">
+</form>
