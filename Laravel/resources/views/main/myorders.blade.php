@@ -1,0 +1,53 @@
+@extends('layouts.template')
+@section('main-content')
+    @php
+        $data=auth()->user();
+    @endphp
+    <div class="main-content">
+        <div class="content-top">
+            <div class="content-top__text">Купить игры неборого без регистрации смс с торента, получить компкт диск, скачать Steam игры после оплаты</div>
+            <div class="slider"><img src="{{asset('/img/slider.png')}}" alt="Image" class="image-main"></div>
+        </div>
+        <div class="content-middle">
+            <div class="content-head__container">
+                <div class="content-head__title-wrap">
+                    <div class="content-head__title-wrap__title bcg-title">Мои заказы</div> <br>
+                        @if($data['admin']==1)
+                            <a href="{{route('checkorders')}}">Посмотреть все заказы</a>
+                        @endif
+                </div>
+                <div class="content-head__search-block">
+                    <div class="search-container">
+                        <form class="search-container__form">
+                            <input type="text" class="search-container__form__input">
+                            <button class="search-container__form__btn">search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="content-main__container">
+
+                <div class="cart-product-list">
+                   @foreach($product as $oneproduct)
+                    <div class="cart-product-list__item">
+                        <div class="cart-product__item__product-photo"><img src="{{asset('storage/storage/images/'. $oneproduct['img'].'.jpg')}}" class="cart-product__item__product-photo__image"></div>
+                        <div class="cart-product__item__product-name">
+                            <div class="cart-product__item__product-name__content"><a href="{{route('productnfo',['product'=>$oneproduct['namePrd']])}}">{{$oneproduct['namePrd']}}</a></div>
+                        </div>
+                        <div class="cart-product__item__cart-date">
+                            <div class="cart-product__item__cart-date__content">{{$oneproduct['created_at']}}</div>
+                        </div>
+                        <div class="cart-product__item__product-price"><span class="product-price__value">{{$oneproduct['price']}}</span></div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="content-footer__container">
+                <ul class="page-nav">
+                    <li class="page-nav__item"><a href="#" class="page-nav__item__link">@php echo $product->links()@endphp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-bottom"></div>
+    </div>
+@endsection
