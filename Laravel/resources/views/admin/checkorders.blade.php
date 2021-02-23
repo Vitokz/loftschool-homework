@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
     <div>
         <table>
             <tr>Список заказов</tr>
@@ -14,4 +13,4 @@
 
         </table>
     </div>
-@endsection
+

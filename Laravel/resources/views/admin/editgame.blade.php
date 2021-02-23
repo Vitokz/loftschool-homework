@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
 <div>
     <form action="{{route('editprocess')}}" method="post" enctype="multipart/form-data">
         @csrf
@@ -36,4 +35,4 @@
         </div>
     </form>
 </div>
-@endsection
+

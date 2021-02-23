@@ -12,16 +12,6 @@
             <div class="content-head__container">
                 <div class="content-head__title-wrap">
                     <div class="content-head__title-wrap__title bcg-title">{{$product->namePrd}}</div><br>
-                    @if($data !== null)
-                        @if($data['admin']==1)
-                            <a href="{{route('editegame',['id'=>$product->id])}}">Редактировать товар</a>
-                        @endif
-                    @endif
-                    @if($data !== null)
-                        @if($data['admin']==1)
-                            <a href="{{route('deletegame',['id'=>$product->id])}}">Удалить товар</a>
-                        @endif
-                    @endif
                 </div>
                 <div class="content-head__search-block">
                     <div class="search-container">

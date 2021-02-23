@@ -12,16 +12,6 @@
             <div class="content-head__container">
                 <div class="content-head__title-wrap">
                     <div class="content-head__title-wrap__title bcg-title">Игры в разделе {{$categoryname}}</div><br>
-                    @if($data !== null)
-                        @if($data['admin']==1)
-                            <a href="{{route('editcategory',['name'=>$categoryname])}}">Редактировать категорию</a>
-                        @endif
-                    @endif
-                    @if($data !== null)
-                        @if($data['admin']==1)
-                            <a href="{{route('deletecategory',['name'=>$categoryname])}}">Удалить категорию</a>
-                        @endif
-                    @endif
                 </div>
                 <div class="content-head__search-block">
                     <div class="search-container">

@@ -1,8 +1,5 @@
 @extends('layouts.template')
 @section('main-content')
-    @php
-        $data=auth()->user();
-    @endphp
     <div class="main-content">
         <div class="content-top">
             <div class="content-top__text">Купить игры недорого без регистрации смс с торента, получить компкт диск,
@@ -14,11 +11,6 @@
             <div class="content-head__container">
                 <div class="content-head__title-wrap">
                     <div class="content-head__title-wrap__title bcg-title">Последние товары</div><br>
-                    @if($data !== null)
-                        @if($data['admin']==1)
-                            <a href="{{route('makegame')}}">Создать товар</a>
-                        @endif
-                    @endif
 
                 </div>
                 <div class="content-head__search-block">

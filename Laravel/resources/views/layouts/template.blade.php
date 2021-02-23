@@ -60,14 +60,9 @@
                 <div class="sidebar-item__content">
                     <ul class="sidebar-category">
                         @foreach($categories as $category)
-                        <li class="sidebar-category__item"><a href="{{route('category',['name'=>$category['namecategory']])}}" class="sidebar-category__item__link">{{$category['namecategory']}}</a>
+                        <li class="sidebar-category__item"><a href="{{route('category',['id'=>$category['id']])}}" class="sidebar-category__item__link">{{$category['namecategory']}}</a>
                         </li>
                         @endforeach
-                        @if($user !== null)
-                        @if($user['admin']==1)
-                                <li class="sidebar-category__item"><a href="{{route('makecategory')}}">Создать категорию</a></li>
-                        @endif
-                            @endif
                     </ul>
                 </div>
             </div>
@@ -86,11 +81,6 @@
                                                                            class="sidebar-news__item__title-news__link">{{$onesidenew['namenews']}}</a></div>
                         </div>
                         @endforeach
-                            @if($user !== null)
-                                @if($user['admin']==1)
-                            <li class="sidebar-category__item"><a href="{{route('makenews')}}">Добавить новость</a></li>
-                                @endif
-                            @endif
                     </div>
                 </div>
             </div>

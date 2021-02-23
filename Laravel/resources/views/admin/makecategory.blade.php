@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
     <form action="{{ route('makecategory') }}" method="post" >
         @csrf
         <p>Создание новой категории</p>
@@ -18,4 +17,4 @@
         </div>
 
     <a href="{{asset('main')}}">На главную</a>
-@endsection
+    </form>

@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
     <div>
     <form action="{{route('deletegameprocess')}}" method="post">
         @csrf
@@ -10,4 +9,4 @@
     </form>
     <a href="{{route('main')}}">Отмена</a>
     </div>
-@endsection
+

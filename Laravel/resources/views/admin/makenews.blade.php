@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
     <form action="{{ route('makenews') }}" method="post" enctype="multipart/form-data">
         @csrf
         <p>Создание нового товара</p>
@@ -24,4 +23,4 @@
     </form>
     <br>
     <a href="{{asset('main')}}">На главную</a>
-@endsection
+

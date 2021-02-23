@@ -1,8 +1,5 @@
 @extends('layouts.template')
 @section('main-content')
-    @php
-        $data=auth()->user();
-    @endphp
     <div class="main-content">
         <div class="content-top">
             <div class="content-top__text">Купить игры неборого без регистрации смс с торента, получить компкт диск, скачать Steam игры после оплаты</div>
@@ -12,9 +9,6 @@
             <div class="content-head__container">
                 <div class="content-head__title-wrap">
                     <div class="content-head__title-wrap__title bcg-title">Мои заказы</div> <br>
-                        @if($data['admin']==1)
-                            <a href="{{route('checkorders')}}">Посмотреть все заказы</a>
-                        @endif
                 </div>
                 <div class="content-head__search-block">
                     <div class="search-container">

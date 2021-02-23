@@ -1,5 +1,4 @@
-@extends('layouts.template')
-@section('main-content')
+
 <form action="{{route('editcategoryprocess')}}" method="post" >
     @csrf
     <p>Редактирование категории</p>
@@ -20,4 +19,4 @@
 
     <a href="{{asset('main')}}">На главную</a>
 </form>
-@endsection
+

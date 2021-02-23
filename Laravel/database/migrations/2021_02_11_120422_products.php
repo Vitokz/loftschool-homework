@@ -16,7 +16,12 @@ class Products extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('namePrd');
-            $table->string('category');
+            $table->integer('category')
+            ->unsigned()
+            ->references("id")
+            ->on('categories')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
             $table->integer('price');
             $table->string('img');
             $table->string('text');

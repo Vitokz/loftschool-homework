@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\News;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,33 +18,34 @@ class AdminController extends Controller
     private $sideNews;
     private $categories;
     private $user;
-    public function __construct()
-    {
-        $this->user=auth()->user();
-        $this->sideNews=MainController::newsPrint(5);
-        $this->categories=MainController::categoryPrint();
-        //$this->middleware('guest')->except('logout');
-    }
+
+
 
     use UploadTrait;
+
     //products
-    public function makegame()
+    public function productlist()
     {
-        return view('admin/makegame',['categories'=> $this->categories,'sidenews'=>$this->sideNews]);
+        $products = Product::get()->toArray();
+        return view('admin/productlist', ['products' => $products]);
     }
 
+    public function makegame()
+    {
+        return view('admin/makegame');
+    }
     public function process_makegame(Request $request)
     {
 
         $request->validate([
             'namePrd' => 'required',
             'category' => 'required',
-            'price'=>'required',
-            'img'=>'required',
-            'text'=>'required'
+            'price' => 'required',
+            'img' => 'required',
+            'text' => 'required'
         ]);
 
-        $name='';
+        $name = '';
         if ($request->has('img')) {
             $image = $request->file('img');
             $name = Str::slug($request->input('namePrd')) . '_' . time();
@@ -52,36 +54,35 @@ class AdminController extends Controller
             $this->uploadOne($image, $folder, 'public', $name);
         }
 
-        $product=Product::create([
+        $product = Product::create([
             'namePrd' => $request->input('namePrd'),
-            'category'=> $request->input('category'),
-            'price'=> $request->input('price'),
-            'img'=>$name,
-            'text'=>$request->input('text'),
+            'category' => $request->input('category'),
+            'price' => $request->input('price'),
+            'img' => $name,
+            'text' => $request->input('text'),
         ]);
-        return redirect()->route('makegame');
+        return redirect()->route('admin');
     }
 
 
     public function editgame($id)
     {
-       $user=Product::find($id);
-        return view('admin/editgame',['categories'=>$this->categories,'sidenews'=>$this->sideNews,'product'=>$user]);
+        $user = Product::find($id);
+        return view('admin/editgame',['product' => $user]);
 
     }
-
     public function process_editgame(Request $request)
     {
-       $request->validate([
-           'id'=>'required',
-           'namePrd' => 'required',
-           'category' => 'required',
-           'image'=>'required',
-           'price'=>'required',
-           'text'=>'required'
-       ]);
+        $request->validate([
+            'id' => 'required',
+            'namePrd' => 'required',
+            'category' => 'required',
+            'image' => 'required',
+            'price' => 'required',
+            'text' => 'required'
+        ]);
 
-       $name=$request->input('img');
+        $name = $request->input('img');
 
         if ($request->has('image')) {
             $image = $request->file('image');
@@ -91,36 +92,40 @@ class AdminController extends Controller
             $this->uploadOne($image, $folder, 'public', $name);
         }
 
-        $product=Product::find($request->input('id'));
-        $product->namePrd=$request->input('namePrd');
-        $product->category=$request->input('category');
-        $product->price=$request->input('price');
-        $product->img=$name;
-        $product->text=$request->input('text');
+        $product = Product::find($request->input('id'));
+        $product->namePrd = $request->input('namePrd');
+        $product->category = $request->input('category');
+        $product->price = $request->input('price');
+        $product->img = $name;
+        $product->text = $request->input('text');
         $product->save();
-        return redirect()->route('main');
+        return redirect()->route('productlist');
     }
 
 
     public function deletegame($id)
     {
-        return view('admin/deletegame',['categories'=>$this->categories,'sidenews'=>$this->sideNews,'id'=>$id]);
+        return view('admin/deletegame', [ 'id' => $id]);
     }
-
     public function process_deletegame(Request $request)
     {
-        $id=$request->input('id');
-        $delete=Product::find($id);
+        $id = $request->input('id');
+        $delete = Product::find($id);
         if ($delete !== null) {
             $delete->delete();
         }
-        return redirect()->route('main');
+        return redirect()->route('productlist');
     }
 
     //categories
+    public function categorylist()
+    {
+        $categories=Category::get()->toArray();
+        return view('admin/categorylist',['categories'=>$categories]);
+    }
     public function makecategory()
     {
-        return view('admin/makecategory',['categories'=> $this->categories,'sidenews'=>$this->sideNews]);
+        return view('admin/makecategory', ['categories' => $this->categories, 'sidenews' => $this->sideNews]);
     }
 
     public function process_makecategory(Request $request)
@@ -131,94 +136,103 @@ class AdminController extends Controller
         ]);
 
 
-        $product=Category::create([
+        $product = Category::create([
             'namecategory' => $request->input('namecategory'),
-            'text'=> $request->input('text'),
+            'text' => $request->input('text'),
         ]);
-        return redirect()->route('makecategory');
+        return redirect()->route('categorylist');
     }
 
 
-    public function editcategory($namecategory)
+    public function editcategory($id)
     {
-        $category=Category::where('namecategory','=',$namecategory)->first();
-        return view('admin/editcategory',['categories'=>$this->categories,'sidenews'=>$this->sideNews,'categoryinfo'=>$category]);
+        $category = Category::where('id', '=', $id)->first();
+        return view('admin/editcategory', ['categoryinfo' => $category]);
     }
 
     public function process_editcategory(Request $request)
     {
-         $request->validate([
-             'namecategory'=>'required',
-             'text'=>'required'
-         ]);
+        $request->validate([
+            'namecategory' => 'required',
+            'text' => 'required'
+        ]);
 
-         $category=Category::find($request->input('id'));
-         $category->namecategory=$request->input('namecategory');
-         $category->text=$request->input('text');
-         $category->save();
-         return redirect()->route('main');
+        $category = Category::find($request->input('id'));
+        $category->namecategory = $request->input('namecategory');
+        $category->text = $request->input('text');
+        $category->save();
+        return redirect()->route('main');
     }
 
 
-    public function deletecategory($namecategory)
+    public function deletecategory($id)
     {
-        return view('admin/editcategory',['categories'=>$this->categories,'sidenews'=>$this->sideNews,'categoryname'=>$namecategory]);
+        return view('admin/deletecategory', ['category' => $id]);
     }
 
     public function process_deletecategory(Request $request)
     {
-        $namecategory=$request->input('id');
-        $delete=Category::where('namecategory','=',$namecategory)->first();
+        $category = $request->input('id');
+        $delete = Category::where('id', '=', $category)->first();
         if ($delete !== null) {
             $delete->delete();
         }
-        return redirect()->route('main');
+        return redirect()->route('categorylist');
     }
 
     //orders
     public function checkOrder()
     {
-        $orders=[];
-        $all = Order::where('id','>',0)
+        $orders = [];
+        $all = Order::where('id', '>', 0)
             ->get();
 
-        foreach ($all as $oneOfALl){
-            $orders[]=[
-                'userName'=>$oneOfALl->userName,
-                'userEmail'=>$oneOfALl->userEmail,
-                'idOrder'=>$oneOfALl->idOrder,
-                'created_at'=>$oneOfALl->created_at
+        foreach ($all as $oneOfALl) {
+            $orders[] = [
+                'userName' => $oneOfALl->userName,
+                'userEmail' => $oneOfALl->userEmail,
+                'idOrder' => $oneOfALl->idOrder,
+                'created_at' => $oneOfALl->created_at
             ];
         }
-        return view('admin/checkorders',['categories'=>$this->categories,'sidenews'=>$this->sideNews,'orders'=>$orders]);
+        return view('admin/checkorders', [ 'orders' => $orders]);
     }
+
     //news
     public function makeNews()
     {
-        return view('admin/makenews',['categories'=> $this->categories,'sidenews'=>$this->sideNews]);
+        return view('admin/makenews');
+    }
+
+    public function admin()
+    {
+        return view('admin/admin');
     }
     //admin
-    /**
-    public function makeAdmin()
+    public function userlist()
     {
-
+        $users=User::get()->toArray();
+        return view('admin/userslist',['users'=>$users]);
     }
 
-    public function process_makeAdmin(Request $request)
-    {
+     public function process_makeAdmin($id)
+     {
+         $user=User::find($id);
+         $user->admin=1;
+         $user->save();
+         return redirect()->route('userslist');
+     }
 
-    }
-     */
 
     public function process_makeNews(Request $request)
     {
         $request->validate([
             'namenews' => 'required',
             'text' => 'required',
-            'img'=>'required'
+            'img' => 'required'
         ]);
 
-        $name='';
+        $name = '';
         if ($request->has('img')) {
             $image = $request->file('img');
             $name = Str::slug($request->input('namePrd')) . '_' . time();
@@ -227,11 +241,11 @@ class AdminController extends Controller
             $this->uploadOne($image, $folder, 'public', $name);
         }
 
-        $product=News::create([
+        $product = News::create([
             'namenews' => $request->input('namenews'),
-            'text'=> $request->input('text'),
-            'img'=>$name,
-            'date'=>date("Y-m-d H:i:s")
+            'text' => $request->input('text'),
+            'img' => $name,
+            'date' => date("Y-m-d H:i:s")
         ]);
         return redirect()->route('makenews');
     }

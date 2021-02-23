@@ -37,10 +37,14 @@ Route::namespace('Auth')->group(function () {
 });
 
 
-Route::namespace('Admin')->group(function() {
+Route::middleware('auth')->prefix('/admin')->group(function() {
+
+    Route::get('/', [AdminController::class, 'admin'])->name('admin');
+//
     Route::get('/makegame', [AdminController::class, 'makegame'])->name('makegame');
     Route::post('/makegame', [AdminController::class, 'process_makegame']);
 //
+    Route::get('/productlist', [AdminController::class, 'productlist'])->name('productlist');
     Route::get('/makecategory', [AdminController::class, 'makecategory'])->name('makecategory');
     Route::post('/makecategory', [AdminController::class, 'process_makecategory']);
 //
@@ -53,17 +57,21 @@ Route::namespace('Admin')->group(function() {
     Route::get('/editgame/{id}', [AdminController::class, 'editgame'])->name('editegame');
     Route::post('/editgame/process', [AdminController::class, 'process_editgame'])->name('editprocess');
 //
-    Route::get('/editcategory/{name}', [AdminController::class, 'editcategory'])->name('editcategory');
+    Route::get('/categorylist', [AdminController::class, 'categorylist'])->name('categorylist');
+    Route::get('/editcategory/{id}', [AdminController::class, 'editcategory'])->name('editcategory');
     Route::post('/editcategory', [AdminController::class, 'process_editcategory'])->name('editcategoryprocess');
 //
-    Route::get('/deletecategory/{name}', [AdminController::class, 'deletecategory'])->name('deletecategory');
+    Route::get('/deletecategory/{id}', [AdminController::class, 'deletecategory'])->name('deletecategory');
     Route::post('/editcategory/process', [AdminController::class, 'process_deletecategory'])->name('deletecategoryprocess');
 
 //
     Route::get('/checkorders', [AdminController::class,'checkOrder'])->name('checkorders');
+    Route::get('/userslist',[AdminController::class,'userlist'])->name('userslist');
+    Route::get('/makeadmin/{id}',[AdminController::class,'process_makeAdmin'])->name('makeadmin');
+
 });
 
 Route::namespace('Category')->group(function()
 {
-    Route::get('category/{name}', [MainController::class, 'goCategory'])->name('category');
+    Route::get('category/{id}', [MainController::class, 'goCategory'])->name('category');
 });

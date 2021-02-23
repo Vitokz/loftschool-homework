@@ -26,7 +26,6 @@ class MainController extends Controller
     }
     public function goMainGet()
     {
-        //$games=self::gamePrint();
         $games=[];
         $product=Product::paginate(3);
         foreach ($product as $item){
@@ -68,9 +67,11 @@ class MainController extends Controller
     }
 
     //Categories
-    public function goCategory($name)
+    public function goCategory($id)
     {
-        $products=self::categoryProductsPrint($name);
+        $products=self::categoryProductsPrint($id);
+        $info=Category::find($id);
+        $name=$info['namecategory'];
         return view('categories/categories',['categories'=> $this->categories,'products'=>$products,'categoryname'=>$name,'sidenews'=>$this->sideNews]);
     }
 
@@ -126,18 +127,19 @@ class MainController extends Controller
         $categories=[];
         $all = Category::where('id','>',1)
             ->get();
-
         foreach ($all as $category){
             $categories[]=[
-                'namecategory'=>$category->namecategory
+                'namecategory'=>$category->namecategory,
+                'id'=>$category->id
                 ];
         }
+
         return $categories;
     }
-    public static function categoryProductsPrint($name)
+    public static function categoryProductsPrint($id)
     {
         $products=[];
-        $all = Product::where('category','=',$name)
+        $all = Product::where('category','=',$id)
             ->get();
 
         foreach ($all as $product){
